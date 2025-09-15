@@ -34,7 +34,7 @@
     },
     "modelVersion": {
       "type": "string",
-      "defaultValue": "2024-11-20",
+      "defaultValue": "2025-06-01",
       "metadata": { "description": "Regionale Verfügbarkeit beachten." }
     },
     "publicNetworkAccess": {
