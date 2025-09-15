@@ -108,7 +108,7 @@ Error: The model 'gpt-4o' is not available in region 'westeurope'
 ```
 Error: Account name already exists
 ```
-**Lösung**: Eindeutigen Account-Namen wählen
+**Lösung**: Eindeutigen Account-Namen wählen - dieser Accountname ist bereits schon bei einer anderen Bereitstellung vergeben.
 
 ### Verbindungstests
 
@@ -152,19 +152,19 @@ curl -X POST "https://IHR_ENDPOINT.openai.azure.com/openai/deployments/IHR_DEPLO
 
 ### Erforderliche Werte für Keasy:
 
-1. **Endpoint URL**: 
+1. **Azure Open AI Endpoint**: 
    ```
-   https://{accountName}.openai.azure.com/
-   ```
-
-2. **API Version**: 
-   ```
-   2024-08-01-preview
+   https://{accountName}.openai.azure.com
    ```
 
-3. **Deployment Path**:
+2. **Azure Open AI Key**: 
    ```
-   /openai/deployments/{deploymentName}/chat/completions
+   *** <secret> ***
+   ```
+
+3. **Deployment Name**:
+   ```
+   gpt-4o
    ```
 
 ### Vollständige URL für Keasy:
@@ -172,22 +172,8 @@ curl -X POST "https://IHR_ENDPOINT.openai.azure.com/openai/deployments/IHR_DEPLO
 https://{accountName}.openai.azure.com/openai/deployments/{deploymentName}/chat/completions?api-version=2024-08-01-preview
 ```
 
-## Wartung und Updates
-
-### Regelmäßige Aufgaben:
-- [ ] Monatliche Kostenprüfung
-- [ ] Quartalsweise API-Schlüssel-Rotation
-- [ ] Monitoring von Modell-Updates
-- [ ] Überprüfung der Nutzungsquoten
-
-### Update-Prozess:
-1. Neue Template-Version herunterladen
-2. Parameter-Datei aktualisieren
-3. Test-Deployment in separater Ressourcengruppe
-4. Produktions-Update durchführen
-
 ## Support-Kontakte
 
 - **Azure Support**: [Azure Support Portal](https://portal.azure.com/#blade/Microsoft_Azure_Support/HelpAndSupportBlade)
-- **Keasy Support**: [www.keasy.de](https://www.keasy.de)
+- **Keasy Support**: [support.keasy.de](https://support.keasy.de/ticket/add)
 - **OpenAI API Dokumentation**: [Azure OpenAI Docs](https://docs.microsoft.com/azure/cognitive-services/openai/)
