@@ -28,7 +28,7 @@ Das ARM Template erstellt folgende Azure-Ressourcen:
   "accountName": "openaiIHRMAKLERNAME",  // Eindeutiger Name (3-63 Zeichen)
   "deploymentName": "gpt-4o",            // Name des Model-Deployments
   "modelName": "gpt-4o",                 // OpenAI-Modell
-  "modelVersion": "2024-08-06",          // Spezifische Modell-Version
+  "modelVersion": "2025-06-01",          // Spezifische Modell-Version
   "publicNetworkAccess": "Enabled"       // Für Keasy-Integration erforderlich
 }
 ```
@@ -128,12 +128,12 @@ $body = @{
     "max_tokens" = 10
 } | ConvertTo-Json -Depth 3
 
-Invoke-RestMethod -Uri "https://IHR_ENDPOINT.openai.azure.com/openai/deployments/IHR_DEPLOYMENT/chat/completions?api-version=2024-08-01-preview" -Method POST -Headers $headers -Body $body
+Invoke-RestMethod -Uri "https://IHR_ENDPOINT.openai.azure.com/openai/deployments/IHR_DEPLOYMENT/chat/completions?api-version=2025-06-01-preview" -Method POST -Headers $headers -Body $body
 ```
 
 #### cURL-Test:
 ```bash
-curl -X POST "https://IHR_ENDPOINT.openai.azure.com/openai/deployments/IHR_DEPLOYMENT/chat/completions?api-version=2024-08-01-preview" \
+curl -X POST "https://IHR_ENDPOINT.openai.azure.com/openai/deployments/IHR_DEPLOYMENT/chat/completions?api-version=2025-06-01-preview" \
   -H "Content-Type: application/json" \
   -H "api-key: IHR_API_SCHLUESSEL" \
   -d '{
@@ -168,7 +168,7 @@ curl -X POST "https://IHR_ENDPOINT.openai.azure.com/openai/deployments/IHR_DEPLO
 
 ### Vollständige URL für Keasy:
 ```
-https://{accountName}.openai.azure.com/openai/deployments/{deploymentName}/chat/completions?api-version=2024-08-01-preview
+https://{accountName}.openai.azure.com/openai/deployments/{deploymentName}/chat/completions?api-version=2025-06-01-preview
 ```
 
 ## Support-Kontakte
