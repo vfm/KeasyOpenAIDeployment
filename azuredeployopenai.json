@@ -16,7 +16,7 @@
     },
     "accountName": {
       "type": "string",
-      "defaultValue": "[toLower(format('aoai{0}', uniqueString(subscription().id, resourceGroup().id, deployment().name)))]",
+      "defaultValue": "openaiIHRMAKLERNAME",
       "minLength": 3,
       "maxLength": 63,
       "metadata": { "description": "Nur Kleinbuchstaben und Ziffern; wird Teil der Endpoint-URL." }
