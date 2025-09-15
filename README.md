@@ -26,7 +26,7 @@ Bei der Bereitstellung können Sie folgende Parameter anpassen:
 
 | Parameter | Beschreibung | Standardwert | Hinweise |
 |-----------|--------------|--------------|----------|
-| **Region** | Azure-Region für die Bereitstellung | `swedencentral` | Aktuell ist GPT-4o nur in `swedencentral` für Standard-Deployments verfügbar |
+| **Region** | Azure-Region für die Bereitstellung | `germanywestcentral` |  |
 | **Account Name** | Name Ihres OpenAI-Accounts | `openaiIHRMAKLERNAME` | Nur Kleinbuchstaben und Zahlen; wird Teil der Endpoint-URL |
 | **Deployment Name** | Name des Modell-Deployments | `gpt-4o` | Wird in Keasy benötigt |
 | **Modell** | OpenAI-Modell | `gpt-4o` | Verfügbar: gpt-4o, gpt-4o-mini |
