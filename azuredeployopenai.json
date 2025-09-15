@@ -4,7 +4,7 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "swedencentral",
+      "defaultValue": "germanywestcentral",
       "allowedValues": [
         "germanywestcentral",
         "westeurope",
@@ -12,7 +12,7 @@
         "northeurope"
       ],
       "metadata": {
-        "description": "EU-Region. Aktuell ist das Modell 'gpt-4o' mit der Version '2024-08-06' nur in der Region 'swedencentral' für Standard-Bereitstellungen verfügbar. Bei Bedarf kann eine andere Region gewählt werden, falls das Modell dort in Zukunft unterstützt wird."
+        "description": "EU-Region. Bei Bedarf kann eine andere Region gewählt werden, falls das Modell dort unterstützt wird."
       }
     },
     "accountName": {
@@ -34,7 +34,7 @@
     },
     "modelVersion": {
       "type": "string",
-      "defaultValue": "2024-08-06",
+      "defaultValue": "2024-11-20",
       "metadata": { "description": "Regionale Verfügbarkeit beachten." }
     },
     "publicNetworkAccess": {
@@ -46,7 +46,7 @@
   "resources": [
     {
       "type": "Microsoft.CognitiveServices/accounts",
-      "apiVersion": "2024-10-01",
+      "apiVersion": "2024-11-20",
       "name": "[parameters('accountName')]",
       "location": "[parameters('location')]",
       "kind": "OpenAI",
@@ -57,7 +57,7 @@
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
-      "apiVersion": "2024-10-01",
+      "apiVersion": "2024-11-20",
       "name": "[format('{0}/{1}', parameters('accountName'), parameters('deploymentName'))]",
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
