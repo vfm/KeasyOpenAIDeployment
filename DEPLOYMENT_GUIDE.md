@@ -26,7 +26,7 @@ Das ARM Template erstellt folgende Azure-Ressourcen:
 {
   "location": "swedencentral",           // EU-DSGVO-konforme Region
   "accountName": "openaiIHRMAKLERNAME",  // Eindeutiger Name (3-63 Zeichen)
-  "deploymentName": "gpt4o",             // Name des Model-Deployments
+  "deploymentName": "gpt-4o",            // Name des Model-Deployments
   "modelName": "gpt-4o",                 // OpenAI-Modell
   "modelVersion": "2024-08-06",          // Spezifische Modell-Version
   "publicNetworkAccess": "Enabled"       // Für Keasy-Integration erforderlich
