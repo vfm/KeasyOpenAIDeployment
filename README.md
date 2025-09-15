@@ -28,7 +28,7 @@ Bei der Bereitstellung können Sie folgende Parameter anpassen:
 |-----------|--------------|--------------|----------|
 | **Region** | Azure-Region für die Bereitstellung | `swedencentral` | Aktuell ist GPT-4o nur in `swedencentral` für Standard-Deployments verfügbar |
 | **Account Name** | Name Ihres OpenAI-Accounts | `openaiIHRMAKLERNAME` | Nur Kleinbuchstaben und Zahlen; wird Teil der Endpoint-URL |
-| **Deployment Name** | Name des Modell-Deployments | `gpt4o` | Wird in Keasy benötigt |
+| **Deployment Name** | Name des Modell-Deployments | `gpt-4o` | Wird in Keasy benötigt |
 | **Modell** | OpenAI-Modell | `gpt-4o` | Verfügbar: gpt-4o, gpt-4o-mini |
 | **Modell-Version** | Version des Modells | `2024-08-06` | Regionale Verfügbarkeit beachten |
 | **Netzwerkzugang** | Öffentlicher Zugriff | `Enabled` | Für Keasy-Integration erforderlich |
@@ -63,7 +63,7 @@ Nach erfolgreichem Deployment finden Sie die wichtigen Informationen:
 - Kopieren Sie **Schlüssel 1** oder **Schlüssel 2**
 
 #### Deployment-Name
-- Der Name, den Sie bei der Bereitstellung festgelegt haben (Standard: `gpt4o`)
+- Der Name, den Sie bei der Bereitstellung festgelegt haben (Standard: `gpt-4o`)
 
 ## 🔧 Keasy-Konfiguration
 
@@ -71,7 +71,7 @@ Mit den erhaltenen Daten können Sie nun Keasy konfigurieren:
 
 1. **URL**: Die Endpoint-URL aus Azure (z.B. `https://openaimustermann.openai.azure.com/`)
 2. **Secret/API-Key**: Der kopierte API-Schlüssel
-3. **Deployment-Name**: Der Name Ihres Deployments (z.B. `gpt4o`)
+3. **Deployment-Name**: Der Name Ihres Deployments (z.B. `gpt-4o`)
 
 Tragen Sie diese Werte in den entsprechenden Feldern in Keasy ein.
 
