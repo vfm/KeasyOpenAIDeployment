@@ -100,7 +100,7 @@ Tragen Sie diese Werte in den entsprechenden Feldern in Keasy ein.
 
 ## 📞 Support
 
-Bei Fragen zur Keasy-Integration wenden Sie sich an den Keasy-Support: [www.keasy.de](https://www.keasy.de)
+Bei Fragen zur Keasy-Integration wenden Sie sich an den Keasy-Support: [support.keasy.de](https://support.keasy.de/ticket/add)
 
 Für Azure-spezifische Probleme konsultieren Sie die [Azure-Dokumentation](https://docs.microsoft.com/azure/cognitive-services/openai/) oder den Azure-Support.
 
