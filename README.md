@@ -30,7 +30,7 @@ Bei der Bereitstellung können Sie folgende Parameter anpassen:
 | **Account Name** | Name Ihres OpenAI-Accounts | `openaiIHRMAKLERNAME` | Nur Kleinbuchstaben und Zahlen; wird Teil der Endpoint-URL |
 | **Deployment Name** | Name des Modell-Deployments | `gpt-4o` | Wird in Keasy benötigt |
 | **Modell** | OpenAI-Modell | `gpt-4o` | Verfügbar: gpt-4o, gpt-4o-mini |
-| **Modell-Version** | Version des Modells | `2024-08-06` | Regionale Verfügbarkeit beachten |
+| **Modell-Version** | Version des Modells | `2025-06-01` | Regionale Verfügbarkeit beachten |
 | **Netzwerkzugang** | Öffentlicher Zugriff | `Enabled` | Für Keasy-Integration erforderlich |
 
 ## 📝 Schritt-für-Schritt-Anleitung
