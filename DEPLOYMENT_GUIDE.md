@@ -101,7 +101,7 @@ Error: The subscription does not have enough quota
 ```
 Error: The model 'gpt-4o' is not available in region 'westeurope'
 ```
-**Lösung**: Region auf `swedencentral` ändern
+**Lösung**: Region ändern
 
 #### 3. Namenskonflikt
 ```
