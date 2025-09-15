@@ -63,7 +63,7 @@
         "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
       ],
       "sku": {
-        "name": "Standard",
+        "name": "DataZoneStandard",
         "capacity": 1
       },
       "properties": {
