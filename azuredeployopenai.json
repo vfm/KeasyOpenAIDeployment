@@ -69,7 +69,7 @@
           "name": "[parameters('modelName')]",
           "version": "[parameters('modelVersion')]"
         },
-        "scaleSettings": { "scaleType": "Standard" }
+        "scaleSettings": { "scaleType": "sku" }
       }
     }
   ],
