@@ -24,7 +24,7 @@ Das ARM Template erstellt folgende Azure-Ressourcen:
 
 ```json
 {
-  "location": "swedencentral",           // EU-DSGVO-konforme Region
+  "location": "germanywestcentral",      // EU-DSGVO-konforme Region
   "accountName": "openaiIHRMAKLERNAME",  // Eindeutiger Name (3-63 Zeichen)
   "deploymentName": "gpt-4o",            // Name des Model-Deployments
   "modelName": "gpt-4o",                 // OpenAI-Modell
@@ -40,9 +40,8 @@ Das ARM Template erstellt folgende Azure-Ressourcen:
 | Region | GPT-4o Verfügbarkeit | GPT-4o-mini Verfügbarkeit | Empfehlung |
 |--------|---------------------|---------------------------|------------|
 | `swedencentral` | ✅ Verfügbar | ✅ Verfügbar | **Empfohlen** |
-| `westeurope` | ⚠️ Begrenzt | ✅ Verfügbar | Alternative |
-| `germanywestcentral` | ⚠️ Begrenzt | ✅ Verfügbar | Alternative |
-| `northeurope` | ⚠️ Begrenzt | ✅ Verfügbar | Alternative |
+| `westeurope` | ✅ Verfügbar | ✅ Verfügbar | Alternative |
+| `germanywestcentral` | ✅ Verfügbar | ✅ Verfügbar | Alternative |
 
 ## Kosten-Kalkulation
 
