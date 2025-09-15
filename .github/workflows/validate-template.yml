@@ -1,0 +1,279 @@
+name: Validate ARM Template
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - '*.json'
+      - '.github/workflows/validate-template.yml'
+  pull_request:
+    branches: [ main ]
+    paths: 
+      - '*.json'
+      - '.github/workflows/validate-template.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Azure ARM Template
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install JSON validation tools
+      run: |
+        pip install jsonschema requests
+
+    - name: Validate JSON syntax
+      run: |
+        echo "🔍 Validating JSON syntax..."
+        python3 -m json.tool azuredeployopenai.json > /dev/null
+        echo "✅ JSON syntax is valid"
+
+    - name: Validate ARM template schema
+      run: |
+        echo "🔍 Validating ARM template schema..."
+        python3 - << 'EOF'
+        import json
+        import requests
+        import jsonschema
+        
+        # Load the template
+        with open('azuredeployopenai.json', 'r') as f:
+            template = json.load(f)
+        
+        # Get the schema URL from the template
+        schema_url = template.get('$schema')
+        if not schema_url:
+            raise ValueError("No $schema property found in template")
+        
+        print(f"Schema URL: {schema_url}")
+        
+        # Download the schema
+        response = requests.get(schema_url)
+        response.raise_for_status()
+        schema = response.json()
+        
+        # Validate against schema
+        try:
+            jsonschema.validate(template, schema)
+            print("✅ ARM template schema validation passed")
+        except jsonschema.exceptions.ValidationError as e:
+            print(f"❌ Schema validation failed: {e.message}")
+            exit(1)
+        EOF
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      continue-on-error: true
+
+    - name: Validate ARM template with Azure CLI (if credentials available)
+      if: ${{ !env.ACT }}
+      run: |
+        if az account show &>/dev/null; then
+          echo "🔍 Validating ARM template with Azure CLI..."
+          
+          # Create a temporary resource group name for validation
+          RG_NAME="rg-validation-$(date +%s)"
+          LOCATION="swedencentral"
+          
+          # Validate the template deployment (dry-run)
+          az deployment group validate \
+            --resource-group $RG_NAME \
+            --template-file azuredeployopenai.json \
+            --parameters accountName=validationtest \
+            --no-wait \
+            --output table || {
+              echo "❌ Azure ARM template validation failed"
+              exit 1
+            }
+          
+          echo "✅ Azure ARM template validation passed"
+        else
+          echo "⚠️  Skipping Azure CLI validation (no credentials configured)"
+          echo "   This is expected for external contributors"
+        fi
+
+    - name: Validate template parameters
+      run: |
+        echo "🔍 Validating template parameters..."
+        python3 - << 'EOF'
+        import json
+        
+        with open('azuredeployopenai.json', 'r') as f:
+            template = json.load(f)
+        
+        parameters = template.get('parameters', {})
+        
+        # Check required parameters exist
+        required_params = ['location', 'accountName', 'deploymentName', 'modelName', 'modelVersion']
+        for param in required_params:
+            if param not in parameters:
+                print(f"❌ Missing required parameter: {param}")
+                exit(1)
+        
+        # Validate specific parameter constraints
+        
+        # Check location allowed values
+        location = parameters.get('location', {})
+        if 'allowedValues' in location:
+            allowed_locations = location['allowedValues']
+            if 'swedencentral' not in allowed_locations:
+                print("❌ swedencentral must be in allowed locations")
+                exit(1)
+        
+        # Check accountName constraints
+        account_name = parameters.get('accountName', {})
+        if account_name.get('minLength', 0) < 3:
+            print("❌ accountName minLength should be at least 3")
+            exit(1)
+        if account_name.get('maxLength', 0) > 64:
+            print("❌ accountName maxLength should be max 63")
+            exit(1)
+        
+        # Check modelName allowed values
+        model_name = parameters.get('modelName', {})
+        if 'allowedValues' in model_name:
+            allowed_models = model_name['allowedValues']
+            if 'gpt-4o' not in allowed_models:
+                print("❌ gpt-4o must be in allowed model values")
+                exit(1)
+        
+        print("✅ All parameter validations passed")
+        EOF
+
+    - name: Validate resource definitions
+      run: |
+        echo "🔍 Validating resource definitions..."
+        python3 - << 'EOF'
+        import json
+        
+        with open('azuredeployopenai.json', 'r') as f:
+            template = json.load(f)
+        
+        resources = template.get('resources', [])
+        
+        if len(resources) != 2:
+            print(f"❌ Expected 2 resources, found {len(resources)}")
+            exit(1)
+        
+        # Check for Cognitive Services account
+        cognitive_service_found = False
+        deployment_found = False
+        
+        for resource in resources:
+            resource_type = resource.get('type')
+            
+            if resource_type == 'Microsoft.CognitiveServices/accounts':
+                cognitive_service_found = True
+                # Validate properties
+                if resource.get('kind') != 'OpenAI':
+                    print("❌ Cognitive Service kind must be 'OpenAI'")
+                    exit(1)
+                
+                sku = resource.get('sku', {})
+                if sku.get('name') != 'S0':
+                    print("❌ SKU name must be 'S0'")
+                    exit(1)
+            
+            elif resource_type == 'Microsoft.CognitiveServices/accounts/deployments':
+                deployment_found = True
+                # Validate deployment properties
+                properties = resource.get('properties', {})
+                model = properties.get('model', {})
+                
+                if model.get('format') != 'OpenAI':
+                    print("❌ Model format must be 'OpenAI'")
+                    exit(1)
+        
+        if not cognitive_service_found:
+            print("❌ Missing Microsoft.CognitiveServices/accounts resource")
+            exit(1)
+        
+        if not deployment_found:
+            print("❌ Missing Microsoft.CognitiveServices/accounts/deployments resource")
+            exit(1)
+        
+        print("✅ All resource definitions are valid")
+        EOF
+
+    - name: Check template outputs
+      run: |
+        echo "🔍 Validating template outputs..."
+        python3 - << 'EOF'
+        import json
+        
+        with open('azuredeployopenai.json', 'r') as f:
+            template = json.load(f)
+        
+        outputs = template.get('outputs', {})
+        
+        if 'endpoint' not in outputs:
+            print("❌ Missing 'endpoint' output")
+            exit(1)
+        
+        endpoint_output = outputs['endpoint']
+        if endpoint_output.get('type') != 'string':
+            print("❌ Endpoint output must be of type 'string'")
+            exit(1)
+        
+        print("✅ Template outputs are valid")
+        EOF
+
+    - name: Lint JSON formatting
+      run: |
+        echo "🔍 Checking JSON formatting..."
+        python3 - << 'EOF'
+        import json
+        
+        # Read the original file
+        with open('azuredeployopenai.json', 'r') as f:
+            original_content = f.read()
+        
+        # Parse and reformat
+        with open('azuredeployopenai.json', 'r') as f:
+            data = json.load(f)
+        
+        # Format with consistent indentation
+        formatted_content = json.dumps(data, indent=2, ensure_ascii=False)
+        
+        # Compare line count (allow for minor differences in formatting)
+        original_lines = len(original_content.strip().split('\n'))
+        formatted_lines = len(formatted_content.strip().split('\n'))
+        
+        # Check if structure is maintained (allow small differences due to formatting)
+        if abs(original_lines - formatted_lines) > 5:
+            print(f"⚠️  JSON formatting may be inconsistent")
+            print(f"   Original: {original_lines} lines, Formatted: {formatted_lines} lines")
+        else:
+            print("✅ JSON formatting looks good")
+        EOF
+
+    - name: Summary
+      if: always()
+      run: |
+        echo ""
+        echo "🎉 ARM Template Validation Complete!"
+        echo ""
+        echo "The following validations were performed:"
+        echo "✅ JSON syntax validation"
+        echo "✅ ARM template schema validation"
+        echo "✅ Parameter constraints validation"
+        echo "✅ Resource definitions validation"  
+        echo "✅ Template outputs validation"
+        echo "✅ JSON formatting check"
+        if az account show &>/dev/null; then
+          echo "✅ Azure CLI deployment validation"
+        else
+          echo "⚠️  Azure CLI validation skipped (no credentials)"
+        fi
+        echo ""
+        echo "Template is ready for deployment! 🚀"

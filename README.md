@@ -107,3 +107,13 @@ Für Azure-spezifische Probleme konsultieren Sie die [Azure-Dokumentation](https
 ## 📄 Lizenz
 
 Diese Vorlage wird "wie besehen" zur Verfügung gestellt. Weitere Informationen finden Sie in den entsprechenden Azure- und OpenAI-Nutzungsbedingungen.
+
+## 🧪 Validierung und Tests
+
+Dieses Repository verfügt über eine umfassende Build- und Test-Pipeline, die sicherstellt, dass die ARM-Vorlage immer gültig und deploybar ist:
+
+- **Automatische Validierung**: Jede Änderung wird automatisch über GitHub Actions getestet
+- **Lokale Tests**: Führen Sie `./scripts/validate-template.sh` aus, um lokal zu validieren
+- **Umfassende Prüfungen**: JSON-Syntax, Azure-Schema, Parameter-Constraints und mehr
+
+Weitere Details finden Sie in [TESTING.md](TESTING.md) und [VALIDATION_STATUS.md](VALIDATION_STATUS.md).
