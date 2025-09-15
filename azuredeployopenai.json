@@ -5,20 +5,43 @@
     "location": {
       "type": "string",
       "defaultValue": "germanywestcentral",
-      "allowedValues": ["germanywestcentral", "westeurope", "swedencentral", "switzerlandnorth"],
-      "metadata": { "description": "Azure Region" }
+      "allowedValues": [
+        "germanywestcentral",
+        "westeurope",
+        "swedencentral",
+        "francecentral",
+        "northeurope"
+      ],
+      "metadata": { "description": "Region (EU Data Boundary). Für Deutschland: germanywestcentral." }
     },
-    "accountName": { "type": "string", "minLength": 3, "maxLength": 63 },
-    "chatDeploymentName": { "type": "string", "defaultValue": "chat" },
-    "chatModel": { "type": "string", "defaultValue": "gpt-4o-mini" },
-    "chatModelVersion": { "type": "string", "defaultValue": "2024-07-18" },
-    "embeddingDeploymentName": { "type": "string", "defaultValue": "embedding" },
-    "embeddingModel": { "type": "string", "defaultValue": "text-embedding-3-large" },
-    "embeddingModelVersion": { "type": "string", "defaultValue": "1" },
+    "accountName": {
+      "type": "string",
+      "defaultValue": "[toLower(format('aoai{0}', uniqueString(subscription().id, resourceGroup().id, deployment().name)))]",
+      "minLength": 3,
+      "maxLength": 63,
+      "metadata": { "description": "Nur Kleinbuchstaben und Ziffern; wird Teil der Endpoint-URL." }
+    },
+    "deploymentName": {
+      "type": "string",
+      "defaultValue": "gpt4o",
+      "metadata": { "description": "Name des Modell-Deployments (in eurer App verwenden)." }
+    },
+    "modelName": {
+      "type": "string",
+      "defaultValue": "gpt-4o",
+      "allowedValues": [ "gpt-4o", "gpt-4o-mini" ],
+      "metadata": { "description": "Modellbezeichnung. Prüft regionale Verfügbarkeit." }
+    },
+    "modelVersion": {
+      "type": "string",
+      "defaultValue": "2024-08-06",
+      "metadata": { "description": "Modellversion gemäß regionaler Verfügbarkeit." }
+    },
     "publicNetworkAccess": {
       "type": "string",
       "defaultValue": "Enabled",
-      "allowedValues": ["Enabled", "Disabled"]
+      "allowedValues": [ "Enabled", "Disabled" ],
+      "metadata": { "description": "Inbound-Zugriff auf den Endpoint. Für schnellen Start: Enabled." }
     }
   },
   "resources": [
@@ -36,31 +59,15 @@
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2023-05-01",
-      "name": "[format('{0}/{1}', parameters('accountName'), parameters('chatDeploymentName'))]",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('deploymentName'))]",
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
       ],
       "properties": {
         "model": {
           "format": "OpenAI",
-          "name": "[parameters('chatModel')]",
-          "version": "[parameters('chatModelVersion')]"
-        },
-        "scaleSettings": { "scaleType": "Standard" }
-      }
-    },
-    {
-      "type": "Microsoft.CognitiveServices/accounts/deployments",
-      "apiVersion": "2023-05-01",
-      "name": "[format('{0}/{1}', parameters('accountName'), parameters('embeddingDeploymentName'))]",
-      "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
-      ],
-      "properties": {
-        "model": {
-          "format": "OpenAI",
-          "name": "[parameters('embeddingModel')]",
-          "version": "[parameters('embeddingModelVersion')]"
+          "name": "[parameters('modelName')]",
+          "version": "[parameters('modelVersion')]"
         },
         "scaleSettings": { "scaleType": "Standard" }
       }
