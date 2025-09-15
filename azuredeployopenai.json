@@ -71,7 +71,8 @@
           "format": "OpenAI",
           "name": "[parameters('modelName')]",
           "version": "[parameters('modelVersion')]"
-        }
+        },
+        "versionUpgradeOption": "OnceNewDefaultVersionAvailable"
       }
     }
   ],
