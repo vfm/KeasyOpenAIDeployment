@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "germanywestcentral",
+      "allowedValues": ["germanywestcentral", "westeurope", "swedencentral", "switzerlandnorth"],
+      "metadata": { "description": "Azure Region" }
+    },
+    "accountName": { "type": "string", "minLength": 3, "maxLength": 63 },
+    "chatDeploymentName": { "type": "string", "defaultValue": "chat" },
+    "chatModel": { "type": "string", "defaultValue": "gpt-4o-mini" },
+    "chatModelVersion": { "type": "string", "defaultValue": "2024-07-18" },
+    "embeddingDeploymentName": { "type": "string", "defaultValue": "embedding" },
+    "embeddingModel": { "type": "string", "defaultValue": "text-embedding-3-large" },
+    "embeddingModelVersion": { "type": "string", "defaultValue": "1" },
+    "publicNetworkAccess": {
+      "type": "string",
+      "defaultValue": "Enabled",
+      "allowedValues": ["Enabled", "Disabled"]
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.CognitiveServices/accounts",
+      "apiVersion": "2023-05-01",
+      "name": "[parameters('accountName')]",
+      "location": "[parameters('location')]",
+      "kind": "OpenAI",
+      "sku": { "name": "S0" },
+      "properties": {
+        "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
+      }
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/deployments",
+      "apiVersion": "2023-05-01",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('chatDeploymentName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+      ],
+      "properties": {
+        "model": {
+          "format": "OpenAI",
+          "name": "[parameters('chatModel')]",
+          "version": "[parameters('chatModelVersion')]"
+        },
+        "scaleSettings": { "scaleType": "Standard" }
+      }
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/deployments",
+      "apiVersion": "2023-05-01",
+      "name": "[format('{0}/{1}', parameters('accountName'), parameters('embeddingDeploymentName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+      ],
+      "properties": {
+        "model": {
+          "format": "OpenAI",
+          "name": "[parameters('embeddingModel')]",
+          "version": "[parameters('embeddingModelVersion')]"
+        },
+        "scaleSettings": { "scaleType": "Standard" }
+      }
+    }
+  ],
+  "outputs": {
+    "endpoint": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))).endpoint]"
+    }
+  }
+}
