@@ -46,7 +46,7 @@
   "resources": [
     {
       "type": "Microsoft.CognitiveServices/accounts",
-      "apiVersion": "2024-11-20",
+      "apiVersion": "2025-06-01",
       "name": "[parameters('accountName')]",
       "location": "[parameters('location')]",
       "kind": "OpenAI",
@@ -57,7 +57,7 @@
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
-      "apiVersion": "2024-11-20",
+      "apiVersion": "2025-06-01",
       "name": "[format('{0}/{1}', parameters('accountName'), parameters('deploymentName'))]",
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
@@ -71,7 +71,8 @@
           "format": "OpenAI",
           "name": "[parameters('modelName')]",
           "version": "[parameters('modelVersion')]"
-        }
+        },
+        "versionUpgradeOption": "OnceNewDefaultVersionAvailable"
       }
     }
   ],
