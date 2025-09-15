@@ -19,3 +19,15 @@ Thumbs.db
 # Local configuration
 .env
 .env.local
+
+# Test and validation artifacts
+/tests/__pycache__/
+/tests/*.pyc
+/validation-results/
+test-results.xml
+coverage.xml
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
