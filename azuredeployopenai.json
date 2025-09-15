@@ -24,7 +24,7 @@
     },
     "deploymentName": {
       "type": "string",
-      "defaultValue": "gpt4o",
+      "defaultValue": "gpt-4o",
       "metadata": { "description": "Name des Modell-Deployments" }
     },
     "modelName": {
