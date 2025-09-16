@@ -91,7 +91,7 @@ Tragen Sie diese Werte in den entsprechenden Feldern in Keasy ein.
 - Stellen Sie sicher, dass die gewählte Region OpenAI unterstützt
 
 **"Modell nicht verfügbar"**
-- Wählen Sie eine andere Region (empfohlen: `swedencentral`)
+- Wählen Sie eine andere Region (empfohlen: `germanywestcentral`)
 - Prüfen Sie die aktuelle Verfügbarkeit der Modelle in der Azure-Dokumentation
 
 **"Zugriff verweigert in Keasy"**
