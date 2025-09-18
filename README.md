@@ -63,15 +63,15 @@ Nach erfolgreichem Deployment finden Sie die wichtigen Informationen:
 - Kopieren Sie **Schlüssel 1** oder **Schlüssel 2**
 
 #### Deployment-Name
-- Der Name, den Sie bei der Bereitstellung festgelegt haben (Standard: `gpt-4o`)
+- Der Name, den Sie bei der Bereitstellung des Modells festgelegt haben (Standard: `gpt-4o`)
 
 ## 🔧 Keasy-Konfiguration
 
 Mit den erhaltenen Daten können Sie nun Keasy konfigurieren:
 
-1. **URL**: Die Endpoint-URL aus Azure (z.B. `https://openaimustermann.openai.azure.com/`)
-2. **Secret/API-Key**: Der kopierte API-Schlüssel
-3. **Deployment-Name**: Der Name Ihres Deployments (z.B. `gpt-4o`)
+1. **URL**: Die Endpoint-URL aus Azure (z.B. `https://openaimustermann.openai.azure.com/`) von der Hauptseite im Azure KI Foundry Portal
+2. **Secret/API-Key**: Der kopierte API-Schlüssel von der Hauptseite im Azure KI Foundry Portal
+3. **Deployment-Name**: Der Name Ihres Modell Deployments (z.B. `gpt-4o`). Diesen finden Sie im Azure KI Foundry Portal unter gemeinsame Ressourcen und dann Bereitstellungen
 
 Tragen Sie diese Werte in den entsprechenden Feldern in Keasy ein.
 
