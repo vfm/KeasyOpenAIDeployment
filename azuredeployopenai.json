@@ -52,6 +52,7 @@
       "kind": "OpenAI",
       "sku": { "name": "S0" },
       "properties": {
+        "customSubDomainName": "[toLower(parameters('accountName'))]",
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
       }
     },
