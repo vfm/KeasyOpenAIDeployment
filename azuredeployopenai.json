@@ -65,7 +65,7 @@
       ],
       "sku": {
         "name": "DataZoneStandard",
-        "capacity": 1
+        "capacity": 10
       },
       "properties": {
         "model": {
