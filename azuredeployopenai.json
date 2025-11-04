@@ -1,86 +1,101 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/subscriptionDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "location": {
-      "type": "string",
-      "defaultValue": "germanywestcentral",
-      "allowedValues": [
-        "germanywestcentral",
-        "westeurope",
-        "swedencentral",
-        "northeurope"
-      ],
-      "metadata": {
-        "description": "EU-Region. Bei Bedarf kann eine andere Region gewählt werden, falls das Modell dort unterstützt wird."
-      }
-    },
-    "accountName": {
-      "type": "string",
-      "defaultValue": "openaiIHRMAKLERNAME",
-      "minLength": 3,
-      "maxLength": 63,
-      "metadata": { "description": "Nur Kleinbuchstaben/Ziffern; wird Teil der Endpoint-URL." }
-    },
-    "deploymentName": {
-      "type": "string",
-      "defaultValue": "gpt-4o",
-      "metadata": { "description": "Name des Modell-Deployments" }
-    },
-    "modelName": {
-      "type": "string",
-      "defaultValue": "gpt-4o",
-      "allowedValues": [ "gpt-4o", "gpt-4o-mini" ]
-    },
-    "modelVersion": {
-      "type": "string",
-      "defaultValue": "2024-11-20",
-      "metadata": { "description": "Regionale Verfügbarkeit beachten." }
-    },
-    "publicNetworkAccess": {
-      "type": "string",
-      "defaultValue": "Enabled",
-      "allowedValues": [ "Enabled", "Disabled" ]
-    }
+    "rgName": { "type": "string", "defaultValue": "rg-keasopenai" },
+    "rgLocation": { "type": "string", "defaultValue": "germanywestcentral", "allowedValues": ["germanywestcentral","westeurope","swedencentral","northeurope"] },
+    "location": { "type": "string", "defaultValue": "germanywestcentral", "allowedValues": ["germanywestcentral","westeurope","swedencentral","northeurope"] },
+    "accountName": { "type": "string", "defaultValue": "openai%Maklername-ohne-%-ergänzen", "minLength": 3, "maxLength": 63 },
+    "deploymentName": { "type": "string", "defaultValue": "gpt-4o" },
+    "modelName": { "type": "string", "defaultValue": "gpt-4o", "allowedValues": ["gpt-4o","gpt-4o-mini"] },
+    "modelVersion": { "type": "string", "defaultValue": "2024-11-20" },
+    "publicNetworkAccess": { "type": "string", "defaultValue": "Enabled", "allowedValues": ["Enabled","Disabled"] }
   },
   "resources": [
     {
-      "type": "Microsoft.CognitiveServices/accounts",
-      "apiVersion": "2025-06-01",
-      "name": "[parameters('accountName')]",
-      "location": "[parameters('location')]",
-      "kind": "OpenAI",
-      "sku": { "name": "S0" },
-      "properties": {
-        "customSubDomainName": "[toLower(parameters('accountName'))]",
-        "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
-      }
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2024-11-01",
+      "name": "[parameters('rgName')]",
+      "location": "[parameters('rgLocation')]",
+      "properties": {}
     },
     {
-      "type": "Microsoft.CognitiveServices/accounts/deployments",
-      "apiVersion": "2025-06-01",
-      "name": "[format('{0}/{1}', parameters('accountName'), parameters('deploymentName'))]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2024-07-01",
+      "name": "openaiNestedDeployment",
+      "resourceGroup": "[parameters('rgName')]",
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+        "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
       ],
-      "sku": {
-        "name": "DataZoneStandard",
-        "capacity": 10
-      },
       "properties": {
-        "model": {
-          "format": "OpenAI",
-          "name": "[parameters('modelName')]",
-          "version": "[parameters('modelVersion')]"
+        "mode": "Incremental",
+        "expressionEvaluationOptions": {
+          "scope": "inner"
         },
-        "versionUpgradeOption": "OnceNewDefaultVersionAvailable"
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "location": { "type": "string" },
+            "accountName": { "type": "string" },
+            "deploymentName": { "type": "string" },
+            "modelName": { "type": "string" },
+            "modelVersion": { "type": "string" },
+            "publicNetworkAccess": { "type": "string" }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.CognitiveServices/accounts",
+              "apiVersion": "2025-06-01",
+              "name": "[parameters('accountName')]",
+              "location": "[parameters('location')]",
+              "kind": "OpenAI",
+              "sku": { "name": "S0" },
+              "properties": {
+                "customSubDomainName": "[toLower(parameters('accountName'))]",
+                "publicNetworkAccess": "[parameters('publicNetworkAccess')]"
+              }
+            },
+            {
+              "type": "Microsoft.CognitiveServices/accounts/deployments",
+              "apiVersion": "2025-06-01",
+              "name": "[format('{0}/{1}', parameters('accountName'), parameters('deploymentName'))]",
+              "dependsOn": [
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))]"
+              ],
+              "sku": { "name": "DataZoneStandard", "capacity": 20 },
+              "properties": {
+                "model": {
+                  "format": "OpenAI",
+                  "name": "[parameters('modelName')]",
+                  "version": "[parameters('modelVersion')]"
+                },
+                "versionUpgradeOption": "OnceNewDefaultVersionAvailable"
+              }
+            }
+          ],
+          "outputs": {
+            "endpoint": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName')), '2025-06-01').endpoint]"
+            }
+          }
+        },
+        "parameters": {
+          "location": { "value": "[parameters('location')]" },
+          "accountName": { "value": "[parameters('accountName')]" },
+          "deploymentName": { "value": "[parameters('deploymentName')]" },
+          "modelName": { "value": "[parameters('modelName')]" },
+          "modelVersion": { "value": "[parameters('modelVersion')]" },
+          "publicNetworkAccess": { "value": "[parameters('publicNetworkAccess')]" }
+        }
       }
     }
   ],
   "outputs": {
-    "endpoint": {
+    "resourceGroupName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('accountName'))).endpoint]"
+      "value": "[parameters('rgName')]"
     }
   }
 }
