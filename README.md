@@ -10,9 +10,9 @@ Nach der erfolgreichen Bereitstellung erhalten Sie alle notwendigen Zugangsdaten
 
 Klicken Sie auf den folgenden Button, um die OpenAI-Bereitstellung direkt in Azure zu starten:
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvfm%2FKeasyOpenAIDeployment%2Frefs%2Fheads%2Fmain%2Fazuredeployopenai.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://keasyki-onboarding.azurewebsites.net)
 
-**Direkt-Link:** [Azure Deployment starten](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvfm%2FKeasyOpenAIDeployment%2Frefs%2Fheads%2Fmain%2Fazuredeployopenai.json)
+**Direkt-Link:** [Azure Deployment starten](https://keasyki-onboarding.azurewebsites.net)
 
 ## 📋 Voraussetzungen
 
@@ -28,15 +28,14 @@ Bei der Bereitstellung können Sie folgende Parameter anpassen:
 |-----------|--------------|--------------|----------|
 | **Region** | Azure-Region für die Bereitstellung | `germanywestcentral` |  |
 | **Account Name** | Name Ihres OpenAI-Accounts | `openaiIHRMAKLERNAME` | Nur Kleinbuchstaben und Zahlen; wird Teil der Endpoint-URL |
-| **Deployment Name** | Name des Modell-Deployments | `gpt-4o` | Wird in Keasy benötigt |
-| **Modell** | OpenAI-Modell | `gpt-4o` | Verfügbar: gpt-4o, gpt-4o-mini |
-| **Modell-Version** | Version des Modells | `2024-11-20` | Regionale Verfügbarkeit beachten |
+| **Deployment Name** | Name des Modell-Deployments | `gpt-5.4` | Wird in Keasy benötigt |
+| **Modell** | OpenAI-Modell | `gpt-5.4` 
 | **Netzwerkzugang** | Öffentlicher Zugriff | `Enabled` | Für Keasy-Integration erforderlich |
 
 ## 📝 Schritt-für-Schritt-Anleitung
 
 ### 1. Azure-Deployment starten
-1. Klicken Sie auf den [Deployment-Link](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fvfm%2FKeasyOpenAIDeployment%2Frefs%2Fheads%2Fmain%2Fazuredeployopenai.json)
+1. Klicken Sie auf den [Deployment-Link](https://keasyki-onboarding.azurewebsites.net)
 2. Melden Sie sich bei Azure an, falls erforderlich
 3. Wählen Sie Ihr Abonnement und eine Ressourcengruppe aus (oder erstellen Sie eine neue)
 
