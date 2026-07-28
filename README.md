@@ -19,6 +19,7 @@ Benötigt wird eine **KI-Ressource** mit zwei Modellen: ein **Sprachmodell** (f�
 ## 🚀 So richten Sie die KI ein
 
 **➡️ [https://keasyki-onboarding.azurewebsites.net](https://keasyki-onboarding.azurewebsites.net)**
+Achtung: Die Seite kann beim ersten Laden bis zu einer Minute Wartezeit haben.
 
 Der Assistent führt Sie in 5 Schritten durch die Einrichtung:
 
